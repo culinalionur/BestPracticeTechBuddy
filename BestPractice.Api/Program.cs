@@ -1,3 +1,5 @@
+using BestPractice.Api.Extensions;
+using BestPractice.Api.Service;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(config);
 builder.Services.AddControllers();
+builder.Services.AddScoped<IContactService , ContactService>();
+builder.Services.ConfigureMapping();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,13 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseHealthChecks("/api/health", new HealthCheckOptions()
-{
-    ResponseWriter = async (context , report) =>
-    {
-        await context.Response.WriteAsync("OK");
-    }
-});
+app.UseCustomHealthCheck();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
