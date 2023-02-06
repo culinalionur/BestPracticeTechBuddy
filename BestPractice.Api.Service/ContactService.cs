@@ -13,21 +13,22 @@ namespace BestPractice.Api.Service
     public class ContactService : IContactService
     {
         private readonly IMapper _mapper;
-        private readonly IHttpClientFactory
+        private readonly IHttpClientFactory _client;
 
-        public ContactService(IMapper mapper)
+        public ContactService(IMapper mapper, IHttpClientFactory client)
         {
             _mapper = mapper;
+            _client = client;
         }
 
-     
+
         public ContactDVO GetContactById(int id)
         {
             //Veri tabanından kaydın getirilmesi
 
             Contact dbContact = GetDummyContact();
 
-            var client = httpClient
+            var client = _client.CreateClient("garantiapi");
 
             ContactDVO resultContact = _mapper.Map<ContactDVO>(dbContact);
 

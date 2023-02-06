@@ -7,7 +7,8 @@ namespace BestPractice.Api.Validation
     {
         public ContactValidator()
         {
-            RuleFor(x => x.Id).GreaterThan(100).WithMessage("Id 100'den büyük olamaz");
+            RuleFor(i => i.FullName).NotEmpty().WithMessage("İsim soy isim boş olamaz");
+            RuleFor(x => x.Id).LessThan(100).WithMessage("Id 100'den büyük olamaz");
         }
     }
 }
